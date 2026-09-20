@@ -3,6 +3,7 @@
 # targets::tar_visnetwork(). Only stale targets re-run.
 
 library(targets)
+library(tarchetypes)
 
 tar_option_set(
   packages = c("readr", "dplyr", "tidyr", "lubridate", "ggplot2", "broom")
@@ -32,5 +33,7 @@ list(
 
   tar_target(sales_model, fit_sales_model(sales)),
   tar_target(sales_model_tidy, broom::tidy(sales_model, conf.int = TRUE)),
-  tar_target(sales_model_fit, broom::glance(sales_model))
+  tar_target(sales_model_fit, broom::glance(sales_model)),
+
+  tar_quarto(report, path = "report.qmd")
 )
