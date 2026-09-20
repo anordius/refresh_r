@@ -1,0 +1,66 @@
+---
+title: "Sales Analysis Report"
+format: html
+execute:
+  echo: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+targets::tar_load(c(
+  region_category_summary,
+  revenue_wide,
+  top_customers,
+  growth,
+  revenue_by_region_plot,
+  monthly_category_plot,
+  sales_model_tidy,
+  sales_model_fit
+))
+```
+
+## Revenue by Region and Category
+
+```{r}
+knitr::kable(region_category_summary)
+```
+
+## Revenue by Region (Wide)
+
+```{r}
+knitr::kable(revenue_wide)
+```
+
+## Top Customer per Region
+
+```{r}
+knitr::kable(top_customers)
+```
+
+## Month-over-Month Growth
+
+```{r}
+knitr::kable(growth)
+```
+
+## Charts
+
+```{r}
+#| label: fig-revenue-region
+#| fig-cap: "Revenue by Region"
+knitr::include_graphics(revenue_by_region_plot)
+```
+
+```{r}
+#| label: fig-monthly-category
+#| fig-cap: "Monthly Revenue by Category"
+knitr::include_graphics(monthly_category_plot)
+```
+
+## Model: Units ~ Discount + Category + Region
+
+```{r}
+knitr::kable(sales_model_tidy)
+knitr::kable(sales_model_fit)
+```

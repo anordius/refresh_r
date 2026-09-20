@@ -15,16 +15,21 @@ so each step only reruns when its inputs change.
   summarising, pivoting, plotting, modeling.
 - `_targets.R` — the pipeline definition: declares each target and how it
   depends on the others.
+- `report.qmd` — Quarto report that reads pipeline targets and renders
+  tables/charts.
 - `output/` — generated plots (git-ignored contents aside from `.gitkeep`).
 
 ## Requirements
 
 ```r
 install.packages(c(
-  "targets", "readr", "dplyr", "tidyr",
-  "lubridate", "ggplot2", "broom"
+  "targets", "tarchetypes", "readr", "dplyr", "tidyr",
+  "lubridate", "ggplot2", "broom", "knitr"
 ))
 ```
+
+Rendering `report` also requires the [Quarto CLI](https://quarto.org/docs/get-started/)
+to be installed and on your `PATH`.
 
 ## Running
 
@@ -61,3 +66,7 @@ targets::tar_read(sales_model_tidy)
    saved to `output/`.
 4. `sales_model`, `sales_model_tidy`, `sales_model_fit` — an `lm()` model
    with tidy output via `broom`.
+5. `report` — renders `report.qmd` to HTML via `tarchetypes::tar_quarto()`.
+   It only rebuilds when the `.qmd` source or any target it `tar_load()`s
+   changes, so editing prose in the report doesn't refit the model, and
+   refitting the model doesn't require re-writing the report by hand.
